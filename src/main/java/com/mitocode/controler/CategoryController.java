@@ -62,6 +62,39 @@ public class CategoryController {
         return ResponseEntity.noContent().build();
     }
 
+    /// //////////// queries ///////////////
+    @GetMapping("find/name/{name}")
+    public ResponseEntity<List<CategoryDTO>> findByName(@PathVariable("name") String name) throws Exception {
+        List<CategoryDTO> list = service.findByName(name).stream().map(this::convertToDTO).toList();
+        return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping("find/name/like/{name}")
+    public ResponseEntity<List<CategoryDTO>> findByNameLike(@PathVariable("name") String name) throws Exception {
+        List<CategoryDTO> list = service.findByNameLikeIgnoreCase(name).stream().map(this::convertToDTO).toList();
+        return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping("find/name/enabled")
+    public ResponseEntity<List<CategoryDTO>> findByNameEnabled(@RequestParam("name") String name, @RequestParam("enabled") boolean enabled) throws Exception {
+        List<CategoryDTO> list = service.findByNameAndEnabled(name, enabled).stream().map(this::convertToDTO).toList();
+        return ResponseEntity.ok().body(list);
+    }
+
+    ////////// JPQL /////////
+    @GetMapping("get/name/desc1")
+    public ResponseEntity<List<CategoryDTO>> findByNameDesc1(@RequestParam("name") String name, @RequestParam("desc") String desc) throws Exception {
+        List<CategoryDTO> list = service.getNameAndDescription1(name, desc).stream().map(this::convertToDTO).toList();
+        return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping("get/name/desc2")
+    public ResponseEntity<List<CategoryDTO>> findByNameDesc2(@RequestParam("name") String name, @RequestParam("desc") String desc) throws Exception {
+        List<CategoryDTO> list = service.getNameAndDescription2(name, desc).stream().map(this::convertToDTO).toList();
+        return ResponseEntity.ok().body(list);
+    }
+
+
     // Clases de ayuda para convertir de entity a dto o viceversa -> para no estar repitiendo constantemente mapper.map en cada endpoint
     private CategoryDTO convertToDTO(Category category) {
         return modelMapper.map(category, CategoryDTO.class);

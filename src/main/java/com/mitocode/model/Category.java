@@ -28,4 +28,8 @@ public class Category { // Esto se convierte en una tabla de base de datos
     @Column(nullable = false)
     private boolean enabled;
 
+    public Category(String name, boolean enabled) {
+        this.name = name;
+        this.enabled = enabled;
+    }
 }

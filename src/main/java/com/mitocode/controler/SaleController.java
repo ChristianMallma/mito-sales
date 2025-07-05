@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/sales")
@@ -57,6 +58,30 @@ public class SaleController {
     public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
         service.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /// queries ///////////////
+    @GetMapping("/mostexpensive")
+    public ResponseEntity<SaleDTO> findMostExpensive() throws Exception {
+        Sale obj = service.getSaleMostExpensive();
+        return ResponseEntity.ok().body(convertToDTO(obj));
+    }
+
+    @GetMapping("/bestseller")
+    public ResponseEntity<String> getBestSeller() throws Exception {
+        String username = service.getBestSellerUsername();
+        return ResponseEntity.ok().body(username);
+    }
+
+    @GetMapping("/sellercount")
+    public ResponseEntity<Map<String, Long>> getSaleCountBySeller() throws Exception {
+        return ResponseEntity.ok().body(service.getSaleCountBySeller());
+    }
+
+    @GetMapping("/bestproduct")
+    public ResponseEntity<Map<String, Double>> getBestProduct() throws Exception {
+        Map<String, Double> byProduct = service.getMostSellerProduct();
+        return ResponseEntity.ok().body(byProduct);
     }
 
     // Clases de ayuda para convertir de entity a dto o viceversa -> para no estar repitiendo constantemente mapper.map en cada endpoint

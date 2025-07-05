@@ -59,6 +59,13 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
+    /// query ///
+    @GetMapping("/byCategory")
+    public ResponseEntity<List<ProductDTO>> findByCategory(@RequestParam("category") String name) throws Exception {
+        List<ProductDTO> list = service.getProductsByCategory(name).stream().map(this::convertToDTO).toList();
+        return ResponseEntity.ok().body(list);
+    }
+
     // Clases de ayuda para convertir de entity a dto o viceversa -> para no estar repitiendo constantemente mapper.map en cada endpoint
     private ProductDTO convertToDTO(Product product) {
         return modelMapper.map(product, ProductDTO.class);
