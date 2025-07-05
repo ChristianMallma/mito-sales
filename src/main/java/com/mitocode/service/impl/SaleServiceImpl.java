@@ -1,5 +1,7 @@
 package com.mitocode.service.impl;
 
+import com.mitocode.dto.IProcedureSaleDTO;
+import com.mitocode.dto.ProcedureSaleDTO;
 import com.mitocode.model.Sale;
 import com.mitocode.model.SaleDetail;
 import com.mitocode.repository.interfaces.IGenericRepo;
@@ -71,5 +73,25 @@ public class SaleServiceImpl extends CRUDImpl<Sale, Integer> implements ISaleSer
                          (oldValue, newValue) -> oldValue,
                          LinkedHashMap::new
                  ));
+    }
+
+    @Override
+    public List<ProcedureSaleDTO> callProcedure1() {
+        return repo.callProcedure1();
+    }
+
+    @Override
+    public List<IProcedureSaleDTO> callProcedure2() {
+        return repo.callProcedure2();
+    }
+
+    @Override
+    public List<ProcedureSaleDTO> callProcedure3() {
+        return repo.callProcedure3();
+    }
+
+    @Override
+    public void callProcedure4() {
+        repo.callProcedure4();
     }
 }

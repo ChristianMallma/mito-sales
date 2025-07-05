@@ -1,5 +1,7 @@
 package com.mitocode.controler;
 
+import com.mitocode.dto.IProcedureSaleDTO;
+import com.mitocode.dto.ProcedureSaleDTO;
 import com.mitocode.dto.SaleDTO;
 import com.mitocode.model.Sale;
 import com.mitocode.service.interfaces.ISaleService;
@@ -82,6 +84,27 @@ public class SaleController {
     public ResponseEntity<Map<String, Double>> getBestProduct() throws Exception {
         Map<String, Double> byProduct = service.getMostSellerProduct();
         return ResponseEntity.ok().body(byProduct);
+    }
+
+    @GetMapping("/resume1")
+    public ResponseEntity<List<ProcedureSaleDTO>> getResume1() throws Exception {
+        return ResponseEntity.ok(service.callProcedure1());
+    }
+
+    @GetMapping("/resume2")
+    public ResponseEntity<List<IProcedureSaleDTO>> getResume2() throws Exception {
+        return ResponseEntity.ok(service.callProcedure2());
+    }
+
+    @GetMapping("/resume3")
+    public ResponseEntity<List<ProcedureSaleDTO>> getResume3() throws Exception {
+        return ResponseEntity.ok(service.callProcedure3());
+    }
+
+    @GetMapping("/resume4")
+    public ResponseEntity<Void> getResume4() throws Exception {
+        service.callProcedure4();
+        return ResponseEntity.ok().build();
     }
 
     // Clases de ayuda para convertir de entity a dto o viceversa -> para no estar repitiendo constantemente mapper.map en cada endpoint
