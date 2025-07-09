@@ -6,6 +6,9 @@ import com.mitocode.repository.interfaces.IGenericRepo;
 import com.mitocode.service.interfaces.ICRUD;
 import com.mitocode.service.interfaces.ICategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,6 +50,17 @@ public class CategoryServiceImpl extends CRUDImpl<Category, Integer> implements 
     @Override
     public List<Category> getNameAndDescription2(String name, String desc) {
         return repo.getNameAndDescription2(name, desc);
+    }
+
+    @Override
+    public Page<Category> findPage(Pageable pageable) {
+        return repo.findAll(pageable);
+    }
+
+    @Override
+    public List<Category> findAllOrder(String param) {
+        Sort.Direction direction = param.equals("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
+        return repo.findAll(Sort.by(direction, "name"));
     }
 
 //    @Override

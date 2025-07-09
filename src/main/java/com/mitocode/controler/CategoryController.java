@@ -7,6 +7,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -92,6 +95,26 @@ public class CategoryController {
     public ResponseEntity<List<CategoryDTO>> findByNameDesc2(@RequestParam("name") String name, @RequestParam("desc") String desc) throws Exception {
         List<CategoryDTO> list = service.getNameAndDescription2(name, desc).stream().map(this::convertToDTO).toList();
         return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping("/pagination")
+    public ResponseEntity<Page<CategoryDTO>> findPagination(Pageable pageable) throws Exception {
+        Page<CategoryDTO> page = service.findPage(pageable).map(this::convertToDTO);
+        return ResponseEntity.ok().body(page);
+    }
+
+    @GetMapping("/pagination2")
+    public ResponseEntity<Page<CategoryDTO>> findPagination2(
+            @RequestParam(name = "p", defaultValue = "0") int page,
+            @RequestParam(name = "s", defaultValue = "2") int size
+    ) throws Exception {
+        Page<CategoryDTO> pageResult = service.findPage(PageRequest.of(page, size)).map(this::convertToDTO);
+        return ResponseEntity.ok().body(pageResult);
+    }
+
+    @GetMapping("/order")
+    public ResponseEntity<List<CategoryDTO>> findOrder(@RequestParam String param) throws Exception {
+        return ResponseEntity.ok(service.findAllOrder(param).stream().map(this::convertToDTO).toList());
     }
 
 
