@@ -1,5 +1,6 @@
 package com.mitocode.exception;
 
+import com.mitocode.dto.response.GenericResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.net.BindException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestControllerAdvice // El objetivo de esta clase es interceptar cualquier exception del proyecto
 public class GlobalErrorHandler { //extends ResponseEntityExceptionHandler {
@@ -25,11 +27,11 @@ public class GlobalErrorHandler { //extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ModelNotFoundException.class)
-    public ResponseEntity<CustomErrorResponse> handleModelNotFoundException(ModelNotFoundException exception, WebRequest request) {
+    public ResponseEntity<GenericResponse<CustomErrorResponse>> handleModelNotFoundException(ModelNotFoundException exception, WebRequest request) {
         // Usando el Record
         CustomErrorResponse cer = new CustomErrorResponse(LocalDateTime.now(), exception.getMessage(), request.getDescription(false));
 
-        return new ResponseEntity<>(cer, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new GenericResponse<>(404, "not-found", List.of(cer)), HttpStatus.NOT_FOUND);
     }
 
     // Esta clase si conocemos el nombre

@@ -1,6 +1,7 @@
 package com.mitocode.controler;
 
 import com.mitocode.dto.ProductDTO;
+import com.mitocode.dto.response.GenericResponse;
 import com.mitocode.model.Product;
 import com.mitocode.service.interfaces.IProductService;
 import jakarta.validation.Valid;
@@ -27,18 +28,18 @@ public class ProductController {
     private final ModelMapper modelMapper; // Spring busca la clase que está implementando la interfaz, en nuestro caso MapperConfig
 
     @GetMapping
-    public ResponseEntity<List<ProductDTO>> findAll() throws Exception {
+    public ResponseEntity<GenericResponse<ProductDTO>> findAll() throws Exception {
         List<ProductDTO> list = service.findAll()
                 .stream()
                 .map(this::convertToDTO)
                 .toList();
-        return ResponseEntity.ok().body(list);
+        return ResponseEntity.ok().body(new GenericResponse<>(200, "success", list));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> findById(@PathVariable("id") Integer id) throws Exception {
+    public ResponseEntity<GenericResponse<ProductDTO>> findById(@PathVariable("id") Integer id) throws Exception {
         ProductDTO obj = convertToDTO(service.findById(id));
-        return ResponseEntity.ok().body(obj);
+        return ResponseEntity.ok().body(new GenericResponse<>(200, "success", List.of(obj)));
     }
 
     @PostMapping
