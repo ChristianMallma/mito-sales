@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,8 @@ public class CategoryController {
     @Qualifier("categoryMapper") // Para usar el Bean con el mapper que se desea, en este caso categoryMapper
     private final ModelMapper modelMapper; // Spring busca la clase que está implementando la interfaz, en nuestro caso MapperConfig
 
+//    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    @PreAuthorize("@authService.hasAccess()")
     @GetMapping
     public ResponseEntity<List<CategoryDTO>> findAll() throws Exception {
 //        ModelMapper mapper = new ModelMapper();
